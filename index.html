@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<!-- Note: This file was originally named audio_begin.html.  So if you notice something
+	different in the example video don't be alarmed.-->
+
+	<meta charset="UTF-8">
+	<title>JavaScript Video Controls</title>
+	<style>
+		video{
+			width: 90%;
+			border: 1px solid black;
+		}
+		/*Use this class to change video color*/
+		.grayscale{
+			filter: grayscale(100%);
+		}
+		button{
+			margin-bottom: 5px;
+		}
+		/*You can not change anything in the style tag other than to add images for the buttons. */
+
+		.play {
+			background: url('https://image.flaticon.com/icons/svg/149/149125.svg');
+			background-color: transparent;
+			background-repeat: no-repeat;
+			background-position: 0px 0px;
+			cursor: pointer;        /* make the cursor like hovering over an <a> element */
+			height: 20px;           /* make this the size of your image */
+			padding-left: 20px;     /* make text start to the right of the image */
+			vertical-align: middle; /* align the text vertically centered */
+			margin-top: 10px;
+			margin-bottom: 10px;
+		}
+		.pause {
+			background: url('https://image.flaticon.com/icons/svg/149/149127.svg');
+			background-color: transparent;
+			background-repeat: no-repeat;
+			background-position: 0px 0px;
+			cursor: pointer;        /* make the cursor like hovering over an <a> element */
+			height: 20px;           /* make this the size of your image */
+			padding-left: 20px;     /* make text start to the right of the image */
+			vertical-align: middle; /* align the text vertically centered */
+			margin-top: 10px;
+			margin-bottom: 10px;
+		}
+</style>
+</head>
+<body> 
+<main>
+	<h1>JavaScript Video Controls</h1>
+	<button onclick="playVid()" type="button" class = "play">Play Video</button>
+	<button onclick="pauseVid()" type="button" class = "pause">Pause Video</button><br>
+	<button onclick="slowSpeed()" type="button">Slow Down</button>
+	<button onclick="increaseSpeed()" type="button">Speed Up</button><br>
+
+	
+
+	<figure>
+	<video id="myVideo">
+		<source src="https://upload.wikimedia.org/wikipedia/commons/b/b3/Big_Buck_Bunny_Trailer_400p.ogv" type="video/ogg" />
+	  	Your browser does not support HTML5 video.
+	</video>
+	<figcaption>[Dramatic music throughout but no speaking]</figcaption>
+</figure>
+
+	<br/>
+	<button id="mute" onclick="mute()" type="button">Mute</button><br>
+
+	<label for="volumeSlider">Volume </label>: 0 <input type="range" id="volumeSlider"
+         min="0" max="100" value="100" step="10"> 100%<br>
+	<div>Volume is: <span id = "volume"> </span><br><br></div>
+
+	<button onclick="gray()" type="button">Old School</button>
+	<button onclick="color()" type="button">Original</button>
+	<button onclick="random()" type="button">Random</button><br>
+
+	<p>Video courtesy of <a href="https://www.bigbuckbunny.org/" target="_blank">Big Buck Bunny</a>.</p>
+
+	<script> 
+		// You may only change code in the script tag.
+		// You can not change the HTML in the file.
+	var myVideo = document.getElementById('myVideo');
+
+	function playVid() { 
+		console.log("Play Video")
+		// Play the video and update the volume.
+		myVideo.play();
+		var vol = myVideo.volume * 100;
+		document.querySelector("#volume").innerHTML = vol + "%";
+	} 
+	function pauseVid() { 
+		console.log("Pause Video")
+	  	// Play the video.
+	  	myVideo.pause();
+	} 
+	function slowSpeed() {
+		// Slow the vido speed by half and log the new rate to the console. 
+		myVideo.playbackRate *= 0.5;
+		var speed = myVideo.playbackRate;
+		console.log("Speed is " + speed);
+	} 
+	function increaseSpeed() {
+		// Double the video speen and log the new rate to the console. 
+		myVideo.playbackRate *= 2;
+		var speed = myVideo.playbackRate;
+		console.log("Speed is " + speed);
+	} 
+	function mute() { 
+		// If the video is currently muted: 
+		// 		log "unmute" to the console
+		// 		unmute the video
+		// 		change the button text to "mute"
+		// If the video is currently unmuted:  
+	 	//		log "mute" to the console
+		// 		mute the video
+		// 		change the button text to "unmute"
+		if (myVideo.muted == true) {
+			myVideo.muted = false;
+			console.log("Unmuted");
+			document.querySelector("#mute").innerHTML = "Mute";
+		}
+		else {
+			document.querySelector("#mute").innerHTML = "Unmute";
+			myVideo.muted = true;
+			console.log("Muted");
+		}
+	}
+	volumeSlider.oninput = function() {
+		// Change the volume (0 is off, 100 is full volume, everything else is proportionally in between)
+		// Make sure to update the volume element.
+		// Update the console log with the new volume as well.
+		var vol = this.value;
+		myVideo.volume = vol / 100;
+		document.querySelector("#volume").innerHTML = vol + "%";
+		console.log("Volume is " + vol);
+	}
+	       
+	function gray() { 
+		console.log("In grayscale")
+		// Utilize the existing grayscale class.
+		document.querySelector("#myVideo").setAttribute("class", "grayscale");
+	}
+	function color() {
+		console.log("In color") 
+		// Remove the existing grayscale class.
+		document.querySelector("#myVideo").removeAttribute("class", "grayscale");
+	}
+	// Not sure if we can test for this??? 
+	function random(){
+		// Use setProperty to change the grayscale filder and transform properties of the video.
+		// Log what the new values are to the console.
+		var rand = parseFloat(Math.random()*100);
+		myVideo.style.setProperty("filter", "grayscale(" + rand + "%)", "");
+		myVideo.style.setProperty("transform", "skewX(" + rand +"deg)", "");
+		console.log("Grayscale and skewX is " + rand);
+	}
+	</script> 
+
+</main>
+</body> 
+</html>
